@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_controlhome_monitoring,controlhome.monitoring,model_controlhome_monitoring,,1,1,1,1
+access_controlhome_typeelements,controlhome.typeelements,model_controlhome_typeelements,,1,1,1,1
+

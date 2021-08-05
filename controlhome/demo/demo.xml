@@ -1,0 +1,18 @@
+<odoo>
+
+    <record id="object0" model="controlhome.elementtype">
+        <field name="type">Light</field>
+    </record>
+
+    <record id="object0" model="controlhome.elementtype">
+        <field name="type">Door</field>
+    </record>
+
+    <record id="object0" model="controlhome.elementtype">
+        <field name="type">Alarm</field>
+    </record>
+
+    <record id="object0" model="controlhome.elementtype">
+        <field name="type">Equipment</field>
+    </record>
+</odoo>
