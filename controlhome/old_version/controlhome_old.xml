@@ -1,0 +1,93 @@
+<odoo>
+
+    <!-- explicit list view definition -->
+     <record model="ir.ui.view" id="controlhome_monitoring_list">
+      <field name="name">controlhome list</field>
+      <field name="model">controlhome.typeelements</field>
+      <field name="arch" type="xml">
+            <tree string="Equipments to Monitoring" create="false" >
+                <field name="name"/>
+                <field name="qty" />
+                <!--button type="object" name="get_formview_action" string="Open" icon="fa-edit"/-->
+            </tree>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="controlhome_list_action">
+        <field name="name">Monitoring</field>
+        <field name="res_model">controlhome.typeelements</field>
+        <field name="view_mode">tree</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Go to create New Item</p>
+        </field>
+    </record>
+
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="controlhome_newitem_list">
+        <field name="name">monitoring.newitem</field>
+        <field name="model">controlhome.monitoring</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group string="Equipments to Monitoring">
+                        <field name="name"/>
+                        <field name="type"/>
+                        <field name="state"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+      <!-- server action to the one above -->
+    <record model="ir.actions.act_window" id="controlhome_newitem_action">
+        <field name="name">Creating of a new Item</field>
+        <field name="res_model">controlhome.monitoring</field>
+        <field name="view_mode">form</field>
+    </record>
+
+    <!-- Top menu item -->
+    <menuitem name="Control Home" id="main_controlhome_menu"/>
+
+    <!-- menu categories -->
+    <menuitem name="Monitoring" id="controlhome_monitoring" parent="main_controlhome_menu" action="controlhome_list_action"/>
+    <menuitem name="Create new Item" id="controlhome_new_item" parent="main_controlhome_menu" action="controlhome_newitem_action"/>
+
+    <record model="ir.ui.view" id="wizard_form_view">
+        <field name="name">wizard.form</field>
+        <field name="model">controlhome.wizard</field>
+        <field name="arch" type="xml">
+            <tree string="See Equipments" create="false">
+                    <field name="type"/>
+                    <field name="name"/>
+                    <field name="state"/>
+            </tree>
+            <!--footer>
+                <button special="cancel" string="Cancel"/>
+            </footer-->
+        </field>
+    </record>
+
+    <act_window id="launch_monitoring_wizard"
+        name="See in details"
+        binding_model="controlhome.typeelements"
+        res_model="controlhome.wizard"
+        view_mode="tree,form"
+        target="new"
+        />
+
+    <!-- Value of typeelements table -->
+    <record id="object0" model="controlhome.typeelements">
+        <field name="name">Device</field>
+    </record>
+    <record id="object1" model="controlhome.typeelements">
+        <field name="name">Alarm</field>
+    </record>
+    <record id="object2" model="controlhome.typeelements">
+        <field name="name">Door</field>
+    </record>
+    <record id="object3" model="controlhome.typeelements">
+        <field name="name">Light</field>
+    </record>
+</odoo>
