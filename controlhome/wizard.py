@@ -5,22 +5,24 @@ from odoo import models, fields, api
 class Wizard(models.TransientModel):
     _name = 'controlhome.wizard'
 
+    def _default_name(self):
+        return self.env['controlhome.monitoring'].browse(self._context.get('active_ids')).name
 
+    def _default_type(self):
+        for record in self.env['controlhome.monitoring'].browse(self._context.get('active_ids')).type:
+            value = record[0].name
+        return value
 
-    type = fields.Many2many('controlhome.monitoring',string="Name")
-    name = fields.Text(string="Name", compute='_default_monitoring')
-    state = fields.Text(string="State")
+    def _default_state(self):
+        return self.env['controlhome.monitoring'].browse(self._context.get('active_ids')).state
 
-    def _default_monitoring(self):
-        monitoring_obj = self.env['controlhome.monitoring']
-        monitoring_id = self._context.get('active_id')
-        monitoring_record = session_obj.browse(monitoring_id)
-        import pdb; pdb.set_trace()
-        return monitoring_record
+    type = fields.Text(string="Type", readonly= 1, default=_default_type)
+    name = fields.Text(string="Name", readonly= 1, default=_default_name)
+    state = fields.Char(string="State", size=5, default=_default_state)
 
-"""
-    def subscribe(self):
-        #for session in self.session_ids:
-            session.attendee_ids |= self.attendee_ids
+    def modify(self):
+        query= "update controlhome_monitoring set state='%s' where name='%s'" %(self.state,self.name)
+        cr=self.env.cr
+        cr.execute(query)
+        #import pdb; pdb.set_trace()
         return {}
-    """

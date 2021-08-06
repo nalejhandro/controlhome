@@ -10,28 +10,30 @@ class TypeElements(models.Model):
     _description = 'Table for the type of elements to controlling'
 
     name = fields.Text()
-    qty =  fields.Text(string="Qty", compute='_type_qty', domain=[('qty','>','0')])
-
-
-    def _type_qty(self):
-        for record in self:
-            query= "select count(type) from controlhome_monitoring where type=%s" % record.id
-            cr=self.env.cr
-            cr.execute(query)
-            Data = cr.fetchone()
-            record.qty = int(Data[0])
 
 class Monitoring(models.Model):
     _name = 'controlhome.monitoring'
     _description = 'Show the status of the equipment on home'
 
-    #element_types = fields.Text(string="Equipments in Control", compute='_select_type')
-
     name = fields.Text(string="Name", required=True)
     type = fields.Many2one('controlhome.typeelements', string="Type")
-    state = fields.Text(string="State (True/False)", required=True)
+    state = fields.Text(string="State (True/False)", required=True, default="False")
+    color = fields.Float()#variable for Kanban view
 
-    """
+"""
+    @api.onchange('type')
+    def _verify_valid_type(self):
+        if self.type == " ":
+            self.type ="Alarm"
+        elif self.type.name != "Alarm" or self.type.name !=  "Device" or self.type.name != "Light" or self.type.name != "Door":
+            return {
+                    'warning':{
+                        'title': "Incorrect TYPE",
+                        'message': "The TYPE of the equipments only can be Alarm, Device, Door or Light",
+                        }
+                    }
+
+
     def _select_type(self):
         query= "select distinct type from controlhome_monitoring"
         cr=self.env.cr
