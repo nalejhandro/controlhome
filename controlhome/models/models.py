@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -15,32 +16,19 @@ class Monitoring(models.Model):
     _name = 'controlhome.monitoring'
     _description = 'Show the status of the equipment on home'
 
-    name = fields.Text(string="Name", required=True)
+    name = fields.Char(string="Name", size=10, required=True)
     type = fields.Many2one('controlhome.typeelements', string="Type")
-    state = fields.Text(string="State (True/False)", required=True, default="False")
+    state = fields.Char(string="State (On/Off)", size=3, required=True, default="Off")
     color = fields.Float()#variable for Kanban view
 
-"""
-    @api.onchange('type')
-    def _verify_valid_type(self):
-        if self.type == " ":
-            self.type ="Alarm"
-        elif self.type.name != "Alarm" or self.type.name !=  "Device" or self.type.name != "Light" or self.type.name != "Door":
-            return {
-                    'warning':{
-                        'title': "Incorrect TYPE",
-                        'message': "The TYPE of the equipments only can be Alarm, Device, Door or Light",
-                        }
-                    }
+    def modify_state(self):
+        if self.state == "On":
+            value = "Off"
+        elif self.state == "Off":
+            value =  "On"
+        self.state = value
 
-
-    def _select_type(self):
-        query= "select distinct type from controlhome_monitoring"
-        cr=self.env.cr
-        cr.execute(query)
-        Data = cr.fetchall()
-        for record in Data:
-            value = str(record[0])
-            #import pdb; pdb.set_trace()
-            self.element_types = value
-    """
+    @api.constrains('state')
+    def _check_type(self):
+        if self.state != 'On' and self.state != 'Off':
+            raise ValidationError("The value of State only can be On or Off")

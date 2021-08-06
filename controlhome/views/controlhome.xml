@@ -5,10 +5,14 @@
       <field name="name">controlhome list</field>
       <field name="model">controlhome.monitoring</field>
       <field name="arch" type="xml">
-            <tree string="Equipments to Monitoring" create="false" decoration-danger="state == &quot;True&quot;" decoration-primary="state == &quot;False&quot;" >
+          <tree string="Equipments to Monitoring" create="false"
+              decoration-danger="state == &quot;On&quot;" decoration-primary="state == &quot;Off&quot;"
+              delete="false" duplicate="false" edit="false" export_xlsx="false">
                 <field name="type"/>
                 <field name="name" />
-                <field name="state" />
+                <field name="state"/>
+                <button name="modify_state" type="object"
+                        string="Change State" class="oe_highlight"/>
             </tree>
       </field>
     </record>
@@ -49,7 +53,7 @@
                 </group>
                 <footer>
                     <button name="modify" type="object"
-                            string="Modify" class="oe_highlight"/>
+                            string="Change State" class="oe_highlight"/>
                     or
                     <button special="cancel" string="Cancel"/>
                 </footer>
@@ -69,7 +73,7 @@
         <field name="name">controlhome.monitoring.kanban</field>
         <field name="model">controlhome.monitoring</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="state" create="false">
+            <kanban default_group_by="state" group_edit="false" create="false">
                 <field name="color"/>
                 <templates>
                     <t t-name="kanban-box">
@@ -126,12 +130,12 @@
         <field name="name">monitoring.newitem</field>
         <field name="model">controlhome.monitoring</field>
         <field name="arch" type="xml">
-            <form>
+            <form delete="false" duplicate="false">
                 <sheet>
                     <group string="Equipments to Monitoring">
                         <field name="name"/>
                         <field name="type" widget="selection" options="{'no_open':True}">{'readonly': True}</field>
-                        <field name="state"/>
+                        <field name="state" help="Only values True or False are accepted"/>
                     </group>
                 </sheet>
             </form>

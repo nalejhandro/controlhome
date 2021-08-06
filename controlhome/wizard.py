@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
+
 
 class Wizard(models.TransientModel):
     _name = 'controlhome.wizard'
@@ -18,11 +19,18 @@ class Wizard(models.TransientModel):
 
     type = fields.Text(string="Type", readonly= 1, default=_default_type)
     name = fields.Text(string="Name", readonly= 1, default=_default_name)
-    state = fields.Char(string="State", size=5, default=_default_state)
+    state = fields.Char(string="State", size=5, readonly= 1, default=_default_state)
+
 
     def modify(self):
-        query= "update controlhome_monitoring set state='%s' where name='%s'" %(self.state,self.name)
+        self.ensure_one()
+        if self.state == "On":
+            value = "Off"
+        elif self.state == "Off":
+            value =  "On"
+        self.env['controlhome.monitoring'].browse(self._context.get('active_ids')).state = value
+        """ *** This a way to do by SQL ***
+        query= "update controlhome_monitoring set state='%s' where name='%s'" %(value,self.name)
         cr=self.env.cr
-        cr.execute(query)
-        #import pdb; pdb.set_trace()
+        cr.execute(query) """
         return {}
