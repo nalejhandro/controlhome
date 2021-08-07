@@ -135,7 +135,7 @@
                     <group string="Equipments to Monitoring">
                         <field name="name"/>
                         <field name="type" widget="selection" options="{'no_open':True}">{'readonly': True}</field>
-                        <field name="state" help="Only values True or False are accepted"/>
+                        <field name="state" help="Only values On or Off are accepted"/>
                     </group>
                 </sheet>
             </form>

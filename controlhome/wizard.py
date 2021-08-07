@@ -14,6 +14,7 @@ class Wizard(models.TransientModel):
             value = record[0].name
         return value
 
+
     def _default_state(self):
         return self.env['controlhome.monitoring'].browse(self._context.get('active_ids')).state
 
@@ -23,7 +24,6 @@ class Wizard(models.TransientModel):
 
 
     def modify(self):
-        self.ensure_one()
         if self.state == "On":
             value = "Off"
         elif self.state == "Off":
