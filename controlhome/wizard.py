@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api, exceptions
-
+from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 class Wizard(models.TransientModel):
     _name = 'controlhome.wizard'
@@ -10,9 +10,11 @@ class Wizard(models.TransientModel):
         return self.env['controlhome.monitoring'].browse(self._context.get('active_ids')).name
 
     def _default_type(self):
-        for record in self.env['controlhome.monitoring'].browse(self._context.get('active_ids')).type:
-            value = record[0].name
-        return value
+        if len(self.env.context.get('active_ids')) >= 2:
+           raise ValidationError("Only can select one item")
+
+        value = self.env['controlhome.monitoring'].browse(self._context.get('active_ids')).type
+        return value[0].name
 
 
     def _default_state(self):

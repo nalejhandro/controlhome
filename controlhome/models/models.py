@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 import logging
 
@@ -20,6 +20,14 @@ class Monitoring(models.Model):
     type = fields.Many2one('controlhome.typeelements', string="Type")
     state = fields.Char(string="State (On/Off)", size=3, required=True, default="Off")
     color = fields.Float()#variable for Kanban view
+
+
+    _sql_constraints = [
+            ('name_unique',
+                'UNIQUE(name)',
+               _("This name was used by other equipment") ),
+            ]
+
 
     def modify_state(self):
         if self.state == "On":
