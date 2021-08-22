@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
+from websocket_esp32_client import esp32_ws_client
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -35,6 +36,8 @@ class Monitoring(models.Model):
         elif self.state == "Off":
             value =  "On"
         self.state = value
+        esp32 = esp32_ws_client("192.168.1.142")
+        esp32.writing("Fire",value)
 
     @api.constrains('state')
     def _check_type(self):
