@@ -2,7 +2,7 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
-from websocket_esp32_client import esp32_ws_client
+from ..webservices.websocket_esp32_client import esp32_ws_client
 import logging
 
 _logger = logging.getLogger(__name__)

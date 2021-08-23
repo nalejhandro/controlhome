@@ -15,8 +15,6 @@ class bd_webserver(object):
 
 #id = odoo.execute('controlhome.monitoring', 'search', [('name','=','Fire')])
 #item= odoo.execute('controlhome.monitoring', 'read', id, ['state'])
-#print(item)
-#print(module)
 
 class esp32_ws_client(object):
 
@@ -45,10 +43,10 @@ class esp32_ws_client(object):
         except:
             print("Problem with the web server")
 
-abc = esp32_ws_client("192.168.1.142")
-varia, val = abc.reading()
-print(varia)
-print(val)
+#abc = esp32_ws_client("192.168.1.142")
+#varia, val = abc.reading()
+#print(varia)
+#print(val)
 
-bd_webserver("Fire","On")
+#bd_webserver("Fire","On")
 #abc.writing("Fire","Off")
